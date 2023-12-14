@@ -10,7 +10,7 @@ from handlers.start import get_start, get_help
 from state.register import RegisterState
 from state.create import CreateState
 from handlers.register import start_register, register_name, register_phone
-from handlers.admin.create import create_game, select_place
+from handlers.admin.create import create_game, select_place, select_date
 from filters.CheckAdmin import CheckAdmin
 
 
@@ -42,6 +42,7 @@ dp.message.register(register_phone, RegisterState.regPhone)
 # Регистрируем хендлеры с созданием игры
 dp.message.register(create_game, Command(commands='create'), CheckAdmin()) # Вместо игры, придумай что можно добавить в магазин
 dp.callback_query.register(select_place, CreateState.place)
+dp.callback_query.register(select_date, CreateState.date)
 
 
 
