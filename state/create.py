@@ -6,5 +6,5 @@ class CreateState(StatesGroup):
     date = State()
     time = State()
     minplayer = State()
-    max_player = State()
+    maxplayer = State()
     price = State()

@@ -23,3 +23,32 @@ async def select_date(call: CallbackQuery, state: FSMContext):
     await call.message.edit_reply_markup(reply_markup=None)
     await call.answer()
     await state.set_state(CreateState.time)
+
+async def select_time(call: CallbackQuery, state: FSMContext):
+    await call.message.answer(f'Укажите МИНИМАЛЬНОЕ количество игроков от 4 до 16')
+    await state.update_data(time=call.data)
+    await call.message.edit_reply_markup(reply_markup=None)
+    await call.answer()
+    await state.set_state(CreateState.minplayer)
+
+async def select_minplayer(message: Message, state: FSMContext, bot: Bot):
+    if(message.text.isdigit() and 4 <= int(message.text) <= 16):
+        await bot.send_message(message.from_user.id, f'Хорошо, теперь укажите МАКСИМАЛЬНОЕ число игроков, значение должно быть от 4 до 16')
+        await state.update_data(minplayer=message.text)
+        await state.set_state(CreateState.maxplayer)
+    else:
+        await bot.send_message(message.from_user.id, 'Я ожидаю цифру от 4 до 16')
+
+async def select_maxplayer(message: Message, state: FSMContext, bot: Bot):
+    if(message.text.isdigit() and 4 <= int(message.text) <= 16):
+        await bot.send_message(message.from_user.id, f'Теперь укажите стоимость игры') # в проект тз добавь, мол они раньше не имели возможности указывать разную сумму для разных людей
+        await state.update_data(maxplayer=message.text)
+        await state.set_state(CreateState.price)
+    else:
+        await bot.send_message(message.from_user.id, f'Я жду цифру от 4 до 16')
+
+async def select_price(message: Message, state: FSMContext, bot: Bot):
+    await bot.send_message(message.from_user.id, f'Отлично, я Записал игру')
+    await state.update_data(price=message.text)
+    create_data = await state.get_data()
+    print(create_data)
