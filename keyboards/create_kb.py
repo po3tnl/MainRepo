@@ -20,10 +20,3 @@ def date_kb():
         kb.button(text=f"{current_date.strftime('%d.%m')}", callback_data=f"{current_date.strftime('%d.%m.%y')}")
     kb.adjust(1)
     return kb.as_markup()
-
-def time_kb():
-    kb = InlineKeyboardBuilder()
-    for x in range(9, 22, 3): # С 9часов До 21часов||| 3 это промежуток времени, типа 9, 12, 15, 18, 22 (В эти часы, игры Открыта)
-        kb.button(text=f"{x}:00", callback_data=f"time_{x}:00")
-    kb.adjust(1)
-    return kb.as_markup()
