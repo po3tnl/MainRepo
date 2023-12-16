@@ -9,6 +9,7 @@ from utils.commands import set_commands
 from handlers.start import get_start, get_help
 from state.register import RegisterState
 from state.create import CreateState
+from handlers.profile import viewn_profile
 from handlers.register import start_register, register_name, register_phone
 from handlers.admin.create import create_game, select_place, select_date, select_time, select_minplayer, select_maxplayer, select_price
 from filters.CheckAdmin import CheckAdmin
@@ -47,6 +48,8 @@ dp.callback_query.register(select_time, CreateState.time)
 dp.message.register(select_minplayer, CreateState.minplayer)
 dp.message.register(select_maxplayer, CreateState.maxplayer)
 dp.message.register(select_price, CreateState.price)
+# Регистрируем хендлеры профиля
+dp.message.register(viewn_profile, F.text=='Профиль')
 
 
 

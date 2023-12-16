@@ -49,6 +49,16 @@ class Database():
         users = self.cursor.execute("SELECT * FROM users WHERE telegram_id = ?", (telegram_id,))
         return users.fetchone()
 
+    def add_game(self, place_id, date_game, time_game, min_player, max_player, price):
+        self.cursor.execute(f'INSERT INTO games(place_id, date_game, time_game, min_player, max_player, price) VALUES (?, ?, ?, ?, ?, ?)', (place_id, date_game, time_game, min_player, max_player, price))
+        self.connection.commit()
+
+    def db_select_column(self, table_name, column, item):
+        result = self.cursor.execute("SELECT * FROM {} WHERE {} = {}".format(table_name, column, item))
+        return result
+
+
+
     def db_select_all(self, table_name):
         result = self.cursor.execute("SELECT * FROM {}".format(table_name))
         return result.fetchall()

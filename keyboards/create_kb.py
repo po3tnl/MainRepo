@@ -17,7 +17,7 @@ def date_kb():
     current_date = datetime.date.today()
     for i in range(7):
         current_date += datetime.timedelta(days=1)
-        kb.button(text=f"{current_date.strftime('%d.%m')}", callback_data=f"{current_date.strftime('%d,%m,%y')}")
+        kb.button(text=f"{current_date.strftime('%d.%m')}", callback_data=f"{current_date.strftime('%d.%m.%y')}")
     kb.adjust(1)
     return kb.as_markup()
 
