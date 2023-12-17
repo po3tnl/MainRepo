@@ -1,5 +1,8 @@
 import asyncio
 import os
+import psycopg2
+from config import host, user, password, db_name
+
 from dotenv import load_dotenv
 # https://www.youtube.com/watch?v=pVA8Hd8Zh68 ВОТ ВИДОС, СДЕЛАЙ ХОСТИНГ НА СЕРВЕР
 from aiogram import Bot, Dispatcher, F
@@ -17,6 +20,30 @@ from filters.CheckAdmin import CheckAdmin
 
 
 load_dotenv()
+
+try:
+    # connect to database postgreSQL
+    connection = psycopg2.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=db_name
+    )
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT version();"
+        )
+
+        print(f"Server version: {cursor.fetchone()}")
+
+except Exception as _ex:
+    print("[INFO] Error while working with PostgreSQL", _ex)
+finally:
+    if connection:
+        connection.close()
+        print("[INFO] PostgreSQL connection closed")
+
 
 
 token = os.getenv('TOKEN')
