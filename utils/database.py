@@ -1,48 +1,43 @@
-import sqlite3
+import psycopg2
 import sys
 
-
 class Database():
-    def __init__(self, db_name):
-        self.connection = sqlite3.connect(db_name)
+    def __init__(self, db_name, user, password, host, port):
+        self.connection = psycopg2.connect(database=db_name, user=user, password=password, host=host, port=port)
         self.cursor = self.connection.cursor()
         self.create_db()
 
     def create_db(self):
         try:
-            query = ("CREATE TABLE IF NOT EXISTS users("
-                     "id INTEGER PRIMARY KEY,"
-                     "user_name TEXT,"
-                     "user_phone TEXT,"
-                     "telegram_id TEXT);"
-                     
-                     "CREATE TABLE IF NOT EXISTS place("
-                     "id INTEGER PRIMARY KEY,"
-                     "name_place TEXT,"
-                     "place_address TEXT);"
-                     
-                     
-                     "CREATE TABLE IF NOT EXISTS games("
-                     "id INTEGER PRIMARY KEY,"
-                     "place_id TEXT,"
-                     "date_game TEXT,"
-                     "time_game TEXT,"
-                     "min_player INTEGER,"
-                     "max_player INTEGER,"
-                     "price TEXT)")
+            query = (
+                "CREATE TABLE IF NOT EXISTS users("
+                "id SERIAL PRIMARY KEY,"
+                "user_name TEXT,"
+                "user_phone TEXT,"
+                "telegram_id TEXT);"
 
+                "CREATE TABLE IF NOT EXISTS place("
+                "id SERIAL PRIMARY KEY,"
+                "name_place TEXT,"
+                "place_address TEXT);"
 
+                "CREATE TABLE IF NOT EXISTS games("
+                "id SERIAL PRIMARY KEY,"
+                "place_id INTEGER,"
+                "date_game DATE,"
+                "time_game TIME,"
+                "min_player INTEGER,"
+                "max_player INTEGER,"
+                "price TEXT)")
 
-            self.cursor.executescript(query)
+            self.cursor.execute(query)
             self.connection.commit()
-        except sqlite3.Error as Error:
-            print("Ошибка при создании:", Error)
+        except psycopg2.Error as error:
+            print("Ошибка при создании:", error)
 
     def add_user(self, user_name, user_phone, telegram_id):
-        # ЕСЛИ НЕ ДОБАВЛЯЕТСЯ В БАЗУ ДАННЫХ, ОШИБКА ТУТ!!!!!!!!
-        sql = f"INSERT INTO users (user_name,user_phone,telegram_id) VALUES (?,?,?)"
+        sql = "INSERT INTO users (user_name, user_phone, telegram_id) VALUES (%s, %s, %s)"
         self.cursor.execute(sql, (user_name, user_phone, telegram_id))
-
         self.connection.commit()
 
     def select_user_id(self, telegram_id):

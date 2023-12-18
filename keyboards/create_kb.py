@@ -1,10 +1,11 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+import psycopg2
 import os
 import datetime
 from utils.database import Database
 
 def place_kb():
-    db = Database(os.getenv('DATABASE_NAME'))
+    db = Database('your_db_name', 'your_db_user', 'your_db_password', 'your_db_host', 'your_db_port')
     places = db.db_select_all('place')
     kb = InlineKeyboardBuilder()
     for place in places:
@@ -23,7 +24,7 @@ def date_kb():
 
 def time_kb():
     kb = InlineKeyboardBuilder()
-    for x in range(9, 22, 3): # С 9часов До 22часов||| 3 это промежуток времени, типа 9, 12, 15, 18, 22
+    for x in range(9, 22, 3):
         kb.button(text=f"{x}:00", callback_data=f"time_{x}:00")
     kb.adjust(1)
     return kb.as_markup()
