@@ -9,7 +9,7 @@ from utils.commands import set_commands
 from handlers.start import get_start, get_help
 from state.register import RegisterState
 from state.create import CreateState
-from handlers.profile import viewn_profile
+from handlers.profile import viewn_game
 from handlers.register import start_register, register_name, register_phone
 from handlers.admin.create import create_game, select_place, select_date, select_time, select_minplayer, select_maxplayer, select_price
 from filters.CheckAdmin import CheckAdmin
@@ -26,7 +26,8 @@ bot = Bot(token=token, parse_mode='HTML')
 dp = Dispatcher()
 
 async def start_bot(bot: Bot):
-    await bot.send_message(5721135829, text='Я запустил бота')
+    await bot.send_message(5721135829
+                           , text='Я запустил бота')
 
 dp.startup.register(start_bot)
 dp.message.register(get_start, Command(commands='start'))
@@ -49,7 +50,7 @@ dp.message.register(select_minplayer, CreateState.minplayer)
 dp.message.register(select_maxplayer, CreateState.maxplayer)
 dp.message.register(select_price, CreateState.price)
 # Регистрируем хендлеры профиля
-dp.message.register(viewn_profile, F.text=='Профиль')
+dp.message.register(viewn_game, F.text=='Актуальные игры')
 
 
 

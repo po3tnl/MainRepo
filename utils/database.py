@@ -64,6 +64,10 @@ class Database():
         return result.fetchall()
 
 
+    def select_games(self, status, data_game):
+        result = self.cursor.execute("SELECT * FROM `games` JOIN `place` ON place_id = place.id WHERE `status` = '{}' AND `date_game` = {}"
+                                     .format(status, data_game))
+        return result.fetchall()
 
     def __del__(self):
         self.cursor.close()

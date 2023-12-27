@@ -10,7 +10,7 @@ async def get_start(message: Message, bot: Bot):
     db = Database(os.getenv('DATABASE_NAME'))
     users = db.select_user_id(message.from_user.id)
     if (users):
-        await bot.send_message(message.from_user.id, f'Здравствуйте {users[1]}! ', reply_markup=profile_kb)
+        await bot.send_message(message.from_user.id, f'Здравствуйте {users[1]}! ', reply_markup=profile_kb())
     else:
         await bot.send_message(message.from_user.id, '😊Вас Приветсвует Онлайн-Магазин Одежды\n'
         '🐼Вы можете приобрести любую вещь из нашего Каталога\n'
